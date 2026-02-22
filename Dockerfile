@@ -14,6 +14,6 @@ COPY bot/ bot/
 USER appuser
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD ["python", "-c", "import sys; sys.exit(0)"]
+    CMD ["python", "-m", "bot.healthcheck"]
 
 CMD ["python", "-m", "bot"]
