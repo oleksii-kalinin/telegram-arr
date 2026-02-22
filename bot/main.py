@@ -68,8 +68,13 @@ def _exact(text: str) -> str:
     return f"^{re.escape(text)}$"
 
 
+async def _shutdown(app) -> None:
+    await close_radarr()
+    await close_sonarr()
+
+
 def main() -> None:
-    app = ApplicationBuilder().token(settings.bot_token).build()
+    app = ApplicationBuilder().token(settings.bot_token).post_shutdown(_shutdown).build()
 
     # Commands
     app.add_handler(CommandHandler("start", start_cmd))
@@ -156,13 +161,6 @@ def main() -> None:
 
     # Error handler
     app.add_error_handler(error_handler)
-
-    # Cleanup on shutdown
-    async def _shutdown(_app):
-        await close_radarr()
-        await close_sonarr()
-
-    app.post_shutdown(_shutdown)
 
     logger.info("🚀 Bot starting...")
     app.run_polling()
