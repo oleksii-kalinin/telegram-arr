@@ -1,5 +1,5 @@
 services:
   bot:
-    build: .
+    image: ghcr.io/oleksii-kalinin/telegram-arr:latest
     restart: unless-stopped
     env_file: .env
